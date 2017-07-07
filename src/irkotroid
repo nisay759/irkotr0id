@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+# -*- coding: Utf8 -*-
+
+import argparse
+import sys
+import json
+
+from client import *
+
+def main():
+    parser = argparse.ArgumentParser(description='irkotr0id - A modular IRC bot from the future')
+    parser.add_argument('-H', '--host', action='store', dest='host',
+            help='Hostname of the irc server', default=None, required=True)
+    parser.add_argument('-c', '--config', action='store', dest='config',
+            help='Configuration json file', default=None, required=True)
+    parser.add_argument('-p', '--port', action='store', dest='port',
+            help='The port the irc server is listening on', default=6667)
+    parser.add_argument('-P', '--password', action='store', dest='password',
+            help='Password of registered nickname', default=None)
+    parser.add_argument('-n', '--nickserv', action='store', dest='nickserv',
+            help='NickServ password', default=None)
+    parser.add_argument('-o', '--oper', action='store', dest='oper',
+            help='OP', default=None)
+    parser.add_argument('--use-ssl', action='store_true', dest='ssl',
+            help='Connect using a secure connection', default=False)
+
+    results = parser.parse_args()
+    with open(results.config) as json_file:
+        config = json.load(json_file)
+
+    c = client(results.host, results.port, results.ssl, results.password,
+            results.oper, results.nickserv, config)
+
+    try :
+        c.run()
+    except KeyboardInterrupt, e:
+        print 'exiting...'
+        c.quit()
+
+    sys.exit(0)
+
+if __name__ == '__main__':
+    main()

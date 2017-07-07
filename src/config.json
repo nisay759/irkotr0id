@@ -1,0 +1,22 @@
+{
+	"user":
+	{
+		"USERNAME"	:	"irk0bot",
+		"HOSTNAME"	:	"irk0bot",
+		"SERVERNAME":	"irk0bot",
+		"REALNAME"	:	"irk0bot",
+		"NICKNAME"	:	"irk0bot"
+	},
+	"core_plugins": ["pong","update_channel", "server_connection", "help"],
+	"plugins": ["rootme", "notice", "plus_one", "weather"],
+	"connection":
+	{
+		"MAX_RETRY"	:	5,
+		"SLEEP"		:	2
+	},
+	"channels":
+	{
+		"JOINCHAN"	:	["#irkotr0id"],
+		"JOINCHAN_SLEEP":	1
+	}
+}
