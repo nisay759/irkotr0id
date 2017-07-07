@@ -17,8 +17,9 @@ Note, however, that some plugins may have extra requirements. Check your plugin 
 
 # Installation
 ```bash
-git clone ${git link}
+git clone https://github.com/nisay759/irkotr0id
 cd irkotroid/
+./start
 ```
 
 # Usage
@@ -45,6 +46,16 @@ optional arguments:
 
 # Plugins
 Several plugins are provided in the ```src/plugins``` folder.
+
+As of the time of writing, the following plugins are available:
+
+```
+notice: Stores messages and delivers them to a user when (s)he (re)joins the channel
+weather: Gives info about weather. Data is from wttr.in
+plus_one: Give or take away points to/from a user
+rootme: Fetches user score from root-me.org
+repeater: Useless and annoying. Kind of a parrot plugin
+```
 
 However, if you decide to write your own plugin, here's how:
 
@@ -130,7 +141,8 @@ The client provides some useful methods and structures that you will probably us
 
 ```text
 - client.channels
-A dict() with all the channels that the client is connected to (or tried to connect to). Keys are channel names, and values are instances of channel class.
+A dict() with all the channels that the client is connected to (or tried to connect to).
+Keys are channel names, and values are instances of channel class.
 
 - client.quit()
 A method for terminating the connection to the server.
