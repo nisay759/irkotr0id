@@ -30,9 +30,9 @@ class client:
         self.use_ssl   = use_ssl
         self.password  = password
         self.connected = 0
-        self.oper = oper
-        self.nickserv = nickserv
-        self.config = config
+        self.oper      = oper
+        self.nickserv  = nickserv
+        self.config    = config
 
         self.user_name    = self.config['user']['USERNAME']
         self.host_name    = self.config['user']['HOSTNAME']
@@ -150,7 +150,8 @@ class client:
         input_thread.start()
 
         self.irc_login()
-        self.join_chan()
+        for chan in self.config['channels']['JOINCHAN']:
+            self.join_chan(chan)
 
         kb_thread = threading.Thread(target=self.kb_handle)
         kb_thread.daemon = False
@@ -176,10 +177,9 @@ class client:
             print('Socket error [' + str(e[0]) + ']: '+e[1])
             sys.exit(1)
 
-    def join_chan(self):
-        for chan in self.config['channels']['JOINCHAN']:
-            self.channels[chan.lower()] = channel.channel(self, chan)
-            self.channels[chan.lower()].join()
+    def join_chan(self, chan):
+        self.channels[chan.lower()] = channel.channel(self, chan)
+        self.channels[chan.lower()].join()
 
     def disconnect(self):
         self.send_server('QUIT :be back soon')
@@ -289,6 +289,14 @@ class client:
                     plugins = s[4:].strip()
                     for p in plugins.split(' '):
                         self.load_plugin(p)
+                except:
+                    s = ''
+            elif s[0:3] == ':j ':
+                try:
+                    channel = s.split(' ')[1]
+                    if channel[0] != '#':
+                        channel = '#' + channel
+                    self.join_chan(channel)
                 except:
                     s = ''
             s = ''
