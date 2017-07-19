@@ -15,7 +15,8 @@ class Plugin:
     def get_sentence(self, e):
         msg = e.values['msg'][1:].replace(': ', ' ').split()
         target = e.values['target']
-        if target == self.client.nick_name:
+        nick = e.values['nick']
+        if self.client.nick_name == target or self.client.nick_name == nick:
             return
         target = target[1:].lower()
         try:
@@ -34,15 +35,13 @@ class Plugin:
         nick = e.values['nick']
         target = e.values['target']
         msg = e.values['msg'][1:].replace(': ', ' ').split()
-        if target == self.client.nick_name:
+        if self.client.nick_name == target or self.client.nick_name == nick:
             return
         try:
             recipient = target
             target = target[1:].lower()
 
-            if nick == self.client.nick_name:
-                return
-            elif self.client.nick_name in msg:
+            if self.client.nick_name in msg:
                 f = open('/tmp/markov-' + target + '.txt', 'r')
                 text = f.read()
                 f.close()
