@@ -55,6 +55,8 @@ weather: Gives info about weather. Data is from wttr.in
 plus_one: Give or take away points to/from a user
 rootme: Fetches user score from root-me.org
 repeater: Useless and annoying. Kind of a parrot plugin
+markov: A bot talking plugin. The bot learns from user messages on the connected chans
+url_checker: Checks URLs title/content-type
 ```
 
 However, if you decide to write your own plugin, here's how:
@@ -164,6 +166,7 @@ Commands start with ```:```, and the following list summarizes the available com
 - q : Quit
 - lp plugin [, plugin, ...] : Load the plugins passed as arguments
 - rmp plugin [, plugin, ...] : Remove the plugins passed as arguments
+- j channel : Joins the channel passed as argument
 ```
 
 # Contribution
