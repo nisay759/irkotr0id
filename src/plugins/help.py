@@ -34,7 +34,7 @@ class Plugin:
 
 
     def help(self, target):
-        message = "irkotr0id. A modular irc bot from the future"
+        message = "irkotr0id (https://github.com/nisay759/irkotr0id)"
         self.client.priv_msg(target, message)
         plugins = []
         for p in self.client.plugins:
