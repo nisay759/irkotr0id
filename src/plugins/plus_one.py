@@ -67,11 +67,35 @@ class Plugin:
                 message = nick + " : " + str(self.points[target][nick]) + " points"
                 self.client.priv_msg(target, message)
 
+    @event.privmsg()
+    def get_ranking(self, e):
+        if len(self.points) == 0:
+            return
+        target = e.values['target']
+        nick = e.values['nick']
+        msg = e.values['msg'][1:].strip()
+        if target == self.client.nick_name:
+            message = "You can request your points only in a channel"
+        target = target.lower()
+        if msg == '!rank':
+            try:
+                scoreboard = sorted(self.points[target], key=lambda user: self.points[target][user], reverse=True)
+                message = ""
+                for user in scoreboard:
+                    message += user + ': ' + str(self.points[target][user]) + ' | '
+                #Remove last "| "
+                message = message[:-2]
+                self.client.priv_msg(target, message)
+            except:
+                pass
+
 
     def help(self, target):
         message = "[+/-]1 user : Give or take 1 point from a user"
         self.client.priv_msg(target, message)
         message = "!points : Get your own points count"
+        self.client.priv_msg(target, message)
+        message = "!rank : Get chan scoreboard"
         self.client.priv_msg(target, message)
 
 
