@@ -6,6 +6,7 @@ class channel:
         self.name      = name
         self.client    = client
         self.connected = 0
+        self.topic     = str()
         self.users     = list()
 
     def join(self):
@@ -31,5 +32,10 @@ class channel:
             #	print e
 
     def list_user(self):
-        for u in self.users:
-            print '****'+u
+        return ', '.join(self.users)
+
+    def channel_summary(self):
+        print "Name : " + self.name
+        print "Connected : " + str(self.connected)
+        print "Topic : " + self.topic
+        print "Users : " + self.list_user()

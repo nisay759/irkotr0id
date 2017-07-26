@@ -276,7 +276,10 @@ class client:
                     for p in s[1:]:
                         self.reload_plugin(p)
             elif s == ':dbg':
-                print self.map
+                #print self.map
+                for chan in self.channels:
+                    self.channels[chan].channel_summary()
+                    print '=' * 30
             elif s[0:5] == ':rmp ':
                 try:
                     plugins = s[5:].strip()

@@ -30,6 +30,20 @@ class Plugin:
             chan = chan.strip().lower()
             self.client.channels[chan].update_user_list(users.strip().split(' '))
 
+    @event.numeric()
+    @event.topic()
+    def update_topic(self, e):
+        if e.values.has_key('num') and e.values['num'] == '332':
+            (chan, topic) = e.values['msg'].split(':', 1)
+            chan = chan.strip().lower()
+        elif e.values.has_key('chan'):
+            chan = e.values['chan'].lower()
+            topic = e.values['topic']
+        else:
+            return
+
+        self.client.channels[chan].topic = topic
+
     @event.part()
     def channel_part(self, e):
         nick = e.values['nick']
