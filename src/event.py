@@ -206,3 +206,25 @@ class mode(event):
                 return True
 
         return False
+
+#:nisay!~nisay@53.ip-192-99-70.net TOPIC #testbobot :This is a topic
+class topic(event):
+    def __init__(self):
+        super(topic, self).__init__()
+
+    def handle(self, string):
+        if(string[0] == ':'):
+            try:
+                (prefix, cmd, chan, topic) = string[1:].split(' ', 3)
+                (nick, host) = prefix.split('!', 1)
+            except ValueError, e:
+                return False
+
+            if (cmd == 'TOPIC'):
+                self.string = string
+                self.values['nick'] = nick
+                self.values['host'] = host
+                self.values['chan'] = chan
+                self.values['topic'] = topic[1:]
+                return True
+        return False
