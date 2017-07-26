@@ -36,6 +36,8 @@ class Plugin:
         channel = e.values['chan'].lower()
 
         self.client.channels[channel].remove_user(nick)
+        if nick == self.client.nick_name:
+            self.client.channels[channel].connected = 0
 
     @event.quit()
     def user_quit(self, e):

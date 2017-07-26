@@ -299,6 +299,14 @@ class client:
                     self.join_chan(channel)
                 except:
                     s = ''
+            elif s[0:3] == ':p ':
+                try:
+                    chan = s.split(' ')[1]
+                    if chan[0] != '#':
+                        chan = '#' + chan
+                    self.channels[chan.lower()].part()
+                except:
+                    s = ''
             s = ''
 
         self.quit()

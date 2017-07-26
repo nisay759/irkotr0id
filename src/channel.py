@@ -11,6 +11,9 @@ class channel:
     def join(self):
         self.client.send_server('JOIN ' + self.name)
 
+    def part(self):
+        self.client.send_server('PART ' + self.name)
+
     def update_user_list(self, ulist):
         for u in ulist:
             #remove user status: not useful
