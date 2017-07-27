@@ -13,7 +13,7 @@ def main():
             help='Hostname of the irc server', default=None, required=True)
     parser.add_argument('-c', '--config', action='store', dest='config',
             help='Configuration json file', default=None, required=True)
-    parser.add_argument('-p', '--port', action='store', dest='port',
+    parser.add_argument('-p', '--port', action='store', dest='port', type=int,
             help='The port the irc server is listening on', default=6667)
     parser.add_argument('-P', '--password', action='store', dest='password',
             help='Password of registered nickname', default=None)
