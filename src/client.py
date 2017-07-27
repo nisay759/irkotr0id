@@ -205,7 +205,8 @@ class client:
 
 
     def priv_msg(self, target, message):
-        self.send_server('PRIVMSG '+ target + ' :' + message)
+        msg = message.split('\n', 1)[0]
+        self.send_server('PRIVMSG '+ target + ' :' + msg)
 
 
     def irc_login(self):
