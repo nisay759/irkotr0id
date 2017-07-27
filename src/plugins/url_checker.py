@@ -18,6 +18,10 @@ class Plugin:
         nick = e.values['nick']
         msg = e.values['msg'][1:]
         urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', msg)
+
+        if nick == self.client.nick_name:
+            return
+
         if target == self.client.nick_name:
             recipient = nick
         else:
@@ -28,11 +32,12 @@ class Plugin:
                 res = requests.get(url, timeout=3, allow_redirects=True)
                 if 'text/html' in res.headers['content-type']:
                     soup = BeautifulSoup(res.text, 'html.parser')
-                    title = str(soup.title.text.encode('utf-8'))
-                    self.client.priv_msg(recipient, title)
+                    message = str(soup.title.text.encode('utf-8'))
                 else:
                     message = res.headers['content-type']
-                    self.client.priv_msg(recipient, message)
+
+                message = ''.join(c for c in message if ' ' <= c <= '~')
+                self.client.priv_msg(recipient, message)
             except:
                 pass
 
