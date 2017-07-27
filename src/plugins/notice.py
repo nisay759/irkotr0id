@@ -41,8 +41,8 @@ class Plugin:
                 notice = 'From ' + nick + ': ' + message
                 if not self.notices.has_key(target):
                     self.notices[target] = {}
-                    if not self.notices[target].has_key(user):
-                        self.notices[target][user] = []
+                if not self.notices[target].has_key(user):
+                    self.notices[target][user] = []
                 self.notices[target][user].append(notice)
 
     @event.join()
@@ -59,7 +59,7 @@ class Plugin:
                 self.client.priv_msg(chan, message)
                 for notice in self.notices[chan][nick]:
                     self.client.priv_msg(chan, notice)
-                del self.notices[chan][nick]
+                self.notices[chan].pop(nick)
 
     def help(self, target):
         message = "Notify a user with a message when (s)he reconnects."
