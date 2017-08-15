@@ -4,7 +4,13 @@
 import event
 
 import markovify
+import os
 import traceback
+
+home = os.getenv("HOME")
+config_dir = home + '/.irkotroid'
+if not os.path.exists(config_dir):
+    os.mkdir(config_dir)
 
 class Plugin:
 
@@ -13,6 +19,7 @@ class Plugin:
 
     @event.privmsg()
     def get_sentence(self, e):
+        global home
         msg = e.values['msg'][1:].replace(': ', ' ').split()
         target = e.values['target']
         nick = e.values['nick']
@@ -22,16 +29,17 @@ class Plugin:
         try:
             if self.client.nick_name in msg:
                 return
-            if (len(msg) > 1):
-                f = open('/tmp/markov-' + target + '.txt', 'a')
-                f.write(' '.join(msg) + '\n')
-                f.close()
+            path = config_dir + '/markov-' + target + '.txt'
+            f = open(path, 'a')
+            f.write(' '.join(msg) + '\n')
+            f.close()
         except Exception, e:
             print traceback.format_exc()
             pass
 
     @event.privmsg()
     def talk(self, e):
+        global home
         nick = e.values['nick']
         target = e.values['target']
         msg = e.values['msg'][1:].replace(': ', ' ').split()
@@ -42,13 +50,15 @@ class Plugin:
             target = target[1:].lower()
 
             if self.client.nick_name in msg:
-                f = open('/tmp/markov-' + target + '.txt', 'r')
-                text = f.read()
-                f.close()
-                text_model = markovify.NewlineText(text)
-                sentence = text_model.make_short_sentence(2000)
-                if sentence:
-                    self.client.priv_msg(recipient, sentence)
+                path = config_dir + '/markov-' + target + '.txt'
+                if os.path.exists(path):
+                    f = open(path, 'r')
+                    text = f.read()
+                    f.close()
+                    text_model = markovify.NewlineText(text)
+                    sentence = text_model.make_short_sentence(2000)
+                    if sentence:
+                        self.client.priv_msg(recipient, sentence)
         except Exception, e:
             print traceback.format_exc()
             pass
