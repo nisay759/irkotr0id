@@ -228,3 +228,21 @@ class topic(event):
                 self.values['topic'] = topic[1:]
                 return True
         return False
+
+#ERROR :Closing link: (irk0bot@53.ip-192-99-70.net) [Ping timeout: 121 seconds]
+class error(event):
+    def __init__(self):
+        super(error, self).__init__()
+
+    def handle(self, string):
+        try:
+            (text, error, reason) = string.split(':', 2)
+            if text.strip() == 'ERROR':
+                self.string = string
+                self.values['text'] = text
+                self.values['error'] = error
+                self.values['reason'] = reason.strip()
+                return True
+        except:
+            return False
+        return False
