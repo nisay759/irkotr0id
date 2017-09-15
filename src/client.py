@@ -7,11 +7,38 @@ import ssl
 import sys
 import time
 import os
+import logging
 
 import event
 import channel
 
 import traceback
+
+def blue(string):
+    return '\033[94m' + string + '\033[0m'
+
+##########################
+####### LOGGING ##########
+##########################
+home = os.getenv("HOME")
+config_dir = home + '/.irkotroid'
+if not os.path.exists(config_dir):
+    os.mkdir(config_dir)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler(config_dir + '/logs')
+stdout_handler = logging.StreamHandler()
+
+file_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+stdout_formatter = logging.Formatter(blue('%(levelname)s') + ' - ' + '%(message)s')
+
+file_handler.setFormatter(file_formatter)
+stdout_handler.setFormatter(stdout_formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(stdout_handler)
 
 class client:
 
@@ -39,6 +66,8 @@ class client:
         self.server_name  = self.config['user']['SERVERNAME']
         self.real_name    = self.config['user']['REALNAME']
         self.nick_name    = self.config['user']['NICKNAME']
+
+        self.logger = logger
 
         #load events
         self.load_events()
@@ -97,7 +126,7 @@ class client:
             try:
                 self.modules[plugin] = reload(self.modules[plugin])
             except Exception, e:
-                print str(e)
+                self.logger.debug(str(e))
                 return
             self.plugins[plugin] = self.modules[plugin].Plugin(self)
             self.reset_mapping()
@@ -120,8 +149,8 @@ class client:
         try:
             mod = __import__(plugin)
         except ImportError, e:
-            print "[!] Import error in plugin: " + plugin
-            print "  --> " + str(e)
+            self.logger.debug("[!] Import error in plugin: " + plugin)
+            self.logger.debug(str(e))
             return
         if not mod.__dict__.has_key('Plugin'):
             print "[!] Class Plugin not found in: " + plugin
@@ -170,11 +199,11 @@ class client:
                 try:
                     self.socket = ssl.wrap_socket(self.socket)
                 except ssl.SSLError, e:
-                    print('SSL error [' + str(e[0]) + ']: '+e[1])
+                    self.logger.debug('SSL error [' + str(e[0]) + ']: '+e[1])
                     sys.exit(1)
 
         except socket.error, e:
-            print('Socket error [' + str(e[0]) + ']: '+e[1])
+            self.logger.debug('Socket error [' + str(e[0]) + ']: '+e[1])
             sys.exit(1)
 
     def join_chan(self, chan):
@@ -193,11 +222,11 @@ class client:
         try:
             if (len(string) > client.MSG_MAXLEN - 2):
                 string = string[:client.MSG_MAXLEN-3]
-            print ('>> ' + string)
+            self.logger.info('>> ' + string)
             self.socket.send(string+'\r\n')
         except Exception, e:
-            print 'An exception occured while trying to'\
-                 +' send data to server: ' +str(e)
+            self.logger.debug('An exception occured while trying to'\
+                 +' send data to server: ' +str(e))
 
             self.terminated = True
             self.socket.close()
@@ -244,7 +273,7 @@ class client:
                     del lines[-1]
                 for l in lines:
                     if (len(l.strip()) >0):
-                        print ('<< ' + l)
+                        self.logger.info('<< ' + l)
                         for e in self.events:
                             #break if current line
                             #matches an existing event
@@ -256,8 +285,8 @@ class client:
                                     del tmp
                                     break
         except Exception, e:
-            print 'Exception in thread input_handle: '+str(e)
-            print traceback.format_exc()
+            self.logger.debug('Exception in thread input_handle: '+str(e))
+            self.logger.debug(traceback.format_exc())
 
     def kb_handle(self):
         s = ''

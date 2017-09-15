@@ -19,7 +19,7 @@ class Plugin:
                 self.client.channels[channel].connected = 1
                 self.client.channels[channel].name = channel
             except KeyError, e:
-                print e
+                self.client.logger.debug(e)
         else:
             self.client.channels[channel].update_user_list([nick])
 

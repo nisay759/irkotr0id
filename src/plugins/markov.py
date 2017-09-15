@@ -34,7 +34,7 @@ class Plugin:
             f.write(' '.join(msg) + '\n')
             f.close()
         except Exception, e:
-            print traceback.format_exc()
+            self.client.logger.debug(traceback.format_exc())
             pass
 
     @event.privmsg()
@@ -60,7 +60,7 @@ class Plugin:
                     if sentence:
                         self.client.priv_msg(recipient, sentence)
         except Exception, e:
-            print traceback.format_exc()
+            self.client.logger.debug(traceback.format_exc())
             pass
 
 
