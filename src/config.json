@@ -8,7 +8,7 @@
 		"NICKNAME"	:	"irk0bot"
 	},
 	"core_plugins": ["pong","update_channel", "server_connection", "help"],
-	"plugins": ["rootme", "notice", "plus_one", "weather", "markov", "url_checker"],
+	"plugins": ["rootme", "notice", "plus_one", "weather", "markov", "url_checker", "kahoot"],
 	"connection":
 	{
 		"MAX_RETRY"	:	5,
