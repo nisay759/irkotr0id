@@ -68,6 +68,14 @@ class Plugin:
             self.client.channels[chan].connected = 0
         self.client.channels[chan].remove_user(target)
 
+    @event.nick()
+    def renick(self, e):
+        old_nick = e.values['old_nick']
+        new_nick = e.values['new_nick']
+
+        for chan in self.client.channels.values():
+            chan.renick(old_nick, new_nick)
+
     def help(self, target):
         message = "This is a core plugin. You cannot interact with it in any way."
         self.client.priv_msg(target, message)

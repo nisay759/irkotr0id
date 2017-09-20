@@ -31,6 +31,10 @@ class channel:
             #except ValueError, e:
             #	print e
 
+    def renick(self, old_nick, new_nick):
+        if old_nick in self.users:
+            self.users[self.users.index(old_nick)] = new_nick
+
     def list_user(self):
         return ', '.join(self.users)
 

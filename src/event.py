@@ -259,7 +259,7 @@ class nick(event):
             except ValueError, e:
                 return False
 
-            if (cmd == 'NICK')
+            if (cmd == 'NICK'):
                 self.string = string
                 self.values['old_nick'] = old_nick
                 self.values['new_nick'] = new_nick
