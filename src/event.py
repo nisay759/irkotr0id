@@ -246,3 +246,23 @@ class error(event):
         except:
             return False
         return False
+
+class nick(event):
+    def __init__(self):
+        super(nick, self).__init__()
+
+    def handle(self, string):
+        if string[0] == ':':
+            try:
+                (prefix, cmd, new_nick) = string[1:].split(' ', 2)
+                (old_nick, host) = prefix.split('!', 1)
+            except ValueError, e:
+                return False
+
+            if (cmd == 'NICK')
+                self.string = string
+                self.values['old_nick'] = old_nick
+                self.values['new_nick'] = new_nick
+                self.values['host']     = host
+                return True
+        return False
