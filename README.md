@@ -98,6 +98,9 @@ In the example above, ```event.my_event()``` can be replaced with one of the fol
   - ```event.numeric()```: When the server sends a numeric message
   - ```event.kick()```: When a user gets kicked
   - ```event.mode()```: When a change in mode is performed
+  - ```event.topic()```: When a channel's topic in changed
+  - ```event.error()```: When an error occurs (e.g Ping timeout)
+  - ```event.nick()```: When someone changes their nick
 
 Once an event is raised, all the methods that have been decorated with that event are triggered.
 
@@ -134,6 +137,9 @@ event.privmsg :   nick, host, target, msg
 event.numeric :   nick, host, num, msg
 event.kick    :   nick, host, chan, target, reason
 event.mode    :   nick, host, chan, target, mode
+event.topic   :   nick, host, chan, topic
+event.error   :   error, reason
+event.nick    :   old_nick, new_nick, host
 ```
 
 # Client
