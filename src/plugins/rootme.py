@@ -11,7 +11,7 @@ class User:
         self.pseudo = pseudo
         self.url = 'https://www.root-me.org/' + pseudo
         self.score = 0
-        self.rank = '+oo'
+        self.rank = 'n/a'
     def update(self):
         res = requests.get(self.url + '?inc=score&lang=en', allow_redirects=True)
         if res.status_code == 404: return self
@@ -32,26 +32,31 @@ class Plugin:
 
     @event.privmsg()
     def score(self, e):
-        if e.values['nick'] == self.client.nick_name:
-            return
-        if e.values['msg'][1:8] == '!rootme' :
-            target = e.values['target']
-            nicks = e.values['msg'].split(' ', 1)[1:]
-            if len(nicks) == 0 or nicks[0].strip() == '':
-                nicks = [e.values['nick']]
-            else:
-                nicks = nicks[0].split(' ')
-            for nick in nicks:
-                if nick == '': continue
-                if nick[0] in ('~', '#', '@', '+'):
-                    nick = nick[1:].strip()
-                if len(nick) > 1:
-                    user = User(nick).update()
-                    string = '{}: points: {} | rank: {}'.format(user.pseudo, user.score, user.rank)
-                    if target[0] == '#':
-                        self.client.priv_msg(target, string)
-                    elif target == self.client.nick_name :
-                        self.client.priv_msg(nick, string)
+        try:
+            if e.values['nick'] == self.client.nick_name:
+                return
+            if e.values['msg'][1:8] == '!rootme' :
+                target = e.values['target']
+                nicks = e.values['msg'].split(' ', 1)[1:]
+                if len(nicks) == 0 or nicks[0].strip() == '':
+                    nicks = [e.values['nick']]
+                else:
+                    nicks = nicks[0].split(' ')
+                for nick in nicks:
+                    # Avoid URL traversal
+                    nick = nick.split('/')[-1]
+                    if nick == '': continue
+                    if nick[0] in ('~', '#', '@', '+'):
+                        nick = nick[1:].strip()
+                    if len(nick) > 1:
+                        user = User(nick).update()
+                        string = '{}: points: {} | rank: {}'.format(user.pseudo, user.score, user.rank)
+                        if target[0] == '#':
+                            self.client.priv_msg(target, string)
+                        elif target == self.client.nick_name :
+                            self.client.priv_msg(e.values['nick'], string)
+        except:
+            pass
 
     def help(self, target):
         self.client.priv_msg(target, '!rootme [nick1 [, nick2 ...]]')
