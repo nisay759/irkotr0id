@@ -17,12 +17,20 @@ colors = {
         'blue': '\033[94m',
         }
 
-def colorize(string, color):
-    global colors
-    if not color in colors:
-        return string
+styles = {
+        'bold': '\033[1m',
+        'underline': '\033[4m',
+        }
+
+def colorize(string, color=None, style=None):
+    #global colors
+    prepend = str()
+    if not color and not style:
+        return str(string)
     else:
-        return colors[color] + str(string) + '\033[0m'
+        if color: prepend += colors[color]
+        if style: prepend += styles[style]
+        return prepend + str(string) + '\033[0m'
 
 def process_youtube(url):
     video = pafy.new(url)
@@ -31,7 +39,7 @@ def process_youtube(url):
     duration = colorize(video.duration, 'blue')
     title = video.title.encode('utf-8')
 
-    return title + " | " + likes + ":" + dislikes + " | " + duration
+    return title + " [" + likes + ":" + dislikes + "] (" + duration + ")"
 
 
 class Plugin:
