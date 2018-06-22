@@ -155,7 +155,7 @@ Keys are channel names, and values are instances of channel class.
 - client.quit()
 A method for terminating the connection to the server.
 
-- client.privmsg(target, message)
+- client.priv_msg(target, message)
 Send a private message to target, which is either a channel or a nickname
 ```
 
