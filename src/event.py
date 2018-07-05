@@ -262,6 +262,9 @@ class nick(event):
             if (cmd == 'NICK'):
                 self.string = string
                 self.values['old_nick'] = old_nick
+                #Some IRCd add ':' before new_nick
+                if (new_nick[0] == ':'):
+                    new_nick = new_nick[1:]
                 self.values['new_nick'] = new_nick
                 self.values['host']     = host
                 return True
