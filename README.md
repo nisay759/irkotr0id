@@ -1,5 +1,7 @@
-irkotr0id - A modular IRC bot from the future
+irkotr0id - A modular IRC bot from the ~~future~~ past
 =======
+
+### Disclaimer: The project was written when I was learning Python. It might greatly benefit from a rewrite in Python3 and a proper async architecture.
 
 irkotr0id is a modular and totally customizable IRC bot written in Python.
 
@@ -179,6 +181,4 @@ Commands start with ```:```, and the following list summarizes the available com
 Contributions are really appreciated. If you feel there is something useful that might be added to irkotr0id or if you notice a bug, don't hesitate to open an issue or submit a pull request :-)
 
 # License
-`irkotr0id` is available under the [Beerware](http://en.wikipedia.org/wiki/Beerware) license.
-
-If we meet some day, and you think this stuff is worth it, you can buy me a beer in return.
+`irkotr0id` is available under the [MIT](http://en.wikipedia.org/wiki/Beerware](https://en.wikipedia.org/wiki/MIT_License)https://en.wikipedia.org/wiki/MIT_License) license.
